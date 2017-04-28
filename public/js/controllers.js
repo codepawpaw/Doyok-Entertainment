@@ -155,8 +155,8 @@ angular.module('app.controllers', ['ngMaterial']).
            document.getElementById("container").style.width = "18%";
            document.getElementById("container").style.left = "35%";
 
-           document.getElementById("container-1").style.width = "20%";
-           document.getElementById("container-1").style.left = "40%";
+           document.getElementById("container-1").style.width = "30%";
+           document.getElementById("container-1").style.left = "33%";
         }     
     });
 
@@ -434,15 +434,17 @@ angular.module('app.controllers', ['ngMaterial']).
           '<div id="siteNotice">'+
           '</div>'+
           '<h1 id="firstHeading" class="firstHeading">'+result.name+'</h1><BR>'+
-          '<div id="bodyContent">'+
-          '<p>'+result.formatted_address+'</p>'+'<br>';
+          '<div id="bodyContent">';
+          
+        if(result.formatted_address != undefined) contentString += '<p>'+result.formatted_address+'</p>'+'<br>';
 
         if(result.formatted_phone_number != undefined) contentString += '<p>'+result.formatted_phone_number+'</p>';
 
         if(result.rating != undefined) contentString += '<p> Rating '+result.rating+'</p>';
 
-        contentString += '<a href="'+result.url+'"><button class="md-primary md-raised md-button md-ink-ripple" type="button" ">See On Gmap</button></a>'+
-          '<button class="md-primary md-raised md-button md-ink-ripple" type="button" ng-click="getDirection();">Get Direction</button>'+'<br>'+
+        if(resul.url != undefined) contentString += '<a href="'+result.url+'"><button class="md-primary md-raised md-button md-ink-ripple" type="button" ">See On Gmap</button></a>';
+
+        contentString += '<button class="md-primary md-raised md-button md-ink-ripple" type="button" ng-click="getDirection();">Get Direction</button>'+'<br>'+
           '</div>'+
           '</div></CENTER>';
 
