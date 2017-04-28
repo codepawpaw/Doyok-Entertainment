@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="dicoding:email" content="jonathannael12@gmail.com">
+	<title>Doyok Entertainment</title>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <!-- Angular Material style sheet -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/material-design.css">
+
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css'>
+  <link rel="stylesheet" href="/css/chat.css">
+
+
+  
+<style type="text/css">
+
+  .carddemoBasicUsage .card-media {
+    background-color: #999999; 
+  }
+
+  .tabsdemoDynamicTabs md-content {
+    background-color: transparent !important; 
+  }
+  .tabsdemoDynamicTabs md-content md-tabs {
+    border: 1px solid #e1e1e1; 
+  }
+  .tabsdemoDynamicTabs md-content md-tabs md-tab-content {
+    background: #f6f6f6; 
+  }
+  .tabsdemoDynamicTabs md-content md-tabs md-tabs-wrapper {
+    background: white; 
+  }
+  .tabsdemoDynamicTabs md-content h1:first-child {
+    margin-top: 0; 
+  }
+  .tabsdemoDynamicTabs md-input-container {
+    padding-bottom: 0; 
+  }
+  .tabsdemoDynamicTabs .remove-tab {
+    margin-bottom: 40px; 
+  }
+  .tabsdemoDynamicTabs .demo-tab > div > div {
+    padding: 25px;
+    box-sizing: border-box; 
+  }
+  .tabsdemoDynamicTabs .edit-form input {
+    width: 100%; 
+  }
+  .tabsdemoDynamicTabs md-tabs {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12); 
+  }
+  .tabsdemoDynamicTabs md-tab[disabled] {
+    opacity: 0.5; 
+  }
+  .tabsdemoDynamicTabs label {
+    text-align: left; 
+  }
+  .tabsdemoDynamicTabs .long > input {
+    width: 264px; 
+  }
+  .tabsdemoDynamicTabs .md-button.add-tab {
+    transform: translateY(5px); 
+  }
+
+  #map {
+    height: 100%;
+    margin-top:-30px;
+    position: fixed;
+  }
+
+  #container {
+    position:fixed;
+    margin-top: 20px;
+    z-index: 1; /* Stay on top */
+    background: white;
+  }
+
+  #inner {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .child {
+    float: left;
+    width: 23%;
+    margin-left: 10px;
+  }
+
+  .map-container {
+    float: left;
+    width: :70%;
+  }
+
+  .story { 
+    height: 40px; 
+    position: fixed; 
+    bottom:7%;
+    width:100%; 
+    z-index: 2; /* Stay on top */
+  }
+
+
+  /* The side navigation menu */
+  .sidenav {
+      height: 100%; /* 100% Full-height */
+      width: 0; /* 0 width - change this with JavaScript */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Stay on top */
+      top: 0;
+      left: 0;
+      background-color: white; /* Black*/
+      overflow-x: hidden; /* Disable horizontal scroll */
+      padding-top: 60px; /* Place content 60px from the top */
+      transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+      box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  /* The navigation menu links */
+  .sidenav a {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 25px;
+      color: #818181;
+      display: block;
+      transition: 0.3s
+  }
+
+  /* When you mouse over the navigation links, change their color */
+  .sidenav a:hover, .offcanvas a:focus{
+      color: #f1f1f1;
+  }
+
+  /* Position and style the close button (top right corner) */
+  .sidenav .closebtn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      font-size: 36px;
+      margin-left: 50px;
+  }
+
+  /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+  #main {
+      transition: margin-left .5s;
+      padding: 20px;
+  }
+
+  /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+  @media screen and (max-height: 450px) {
+      .sidenav {padding-top: 15px;}
+      .sidenav a {font-size: 18px;}
+  }
+ 
+  #loading{
+    position:fixed;
+    z-index: 1; /* Stay on top */
+  }
+
+  /* Search Box */
+
+  .box: {
+    bottom: 0;
+    z-index: 1; /* Stay on top */
+    position: fixed;
+  }
+
+  .container-1{
+    width: 20%;
+    vertical-align: middle;
+    white-space: nowrap;
+    bottom: 0;
+    margin-bottom: 10px;
+    position: fixed;
+    margin-left: 40%;
+    z-index: 1; 
+  }
+
+  .container-1 input#search{
+    width: 300px;
+    height: 50px;
+    background: #2b303b;
+    border: none;
+    font-size: 10pt;
+    float: left;
+    color: #63717f;
+    padding-left: 45px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+
+    -webkit-transition: background .55s ease;
+    -moz-transition: background .55s ease;
+    -ms-transition: background .55s ease;
+    -o-transition: background .55s ease;
+    transition: background .55s ease;
+  }
+
+  .container-1 input#search::-webkit-input-placeholder {
+     color: #65737e;
+  }
+   
+  .container-1 input#search:-moz-placeholder { /* Firefox 18- */
+     color: #65737e;  
+  }
+   
+  .container-1 input#search::-moz-placeholder {  /* Firefox 19+ */
+     color: #65737e;  
+  }
+   
+  .container-1 input#search:-ms-input-placeholder {  
+     color: #65737e;  
+  }
+
+  .container-1 .icon{
+    position: absolute;
+    margin-left: 17px;
+    margin-top: 17px;
+    z-index: 1;
+    color: #4f5b66;
+  }
+
+  .container-1 input#search:hover, .container-1 input#search:focus, .container-1 input#search:active{
+    outline:none;
+    background: #ffffff;
+  }
+
+</style>
+
+</head>
+
+
+<body ng-app="app" ng-controller="AppCtrl">
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGpHSmPkHlp5F3rsPXtESlR1iulQ9nd6Q&libraries=places"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/appService.js"></script>
+  <script src="js/controllers.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/directives.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+  
+  <div id="container" style="width:18%;left:35%;">
+      <CENTER>
+        <div>
+          <md-input-container>
+              <label>List of Category</label>
+              <md-select ng-model="selectedCategory" ng-click="etByCategory()">
+                <md-option ng-repeat="category in categories" ng-value="category.value">
+                  {{category.name}}
+                </md-option>
+              </md-select>
+          </md-input-container>
+          <md-button class="md-primary md-raised" ng-disabled="clicked" ng-click="getByCategory()">Search</md-button>
+        </div>
+      </CENTER>
+  </div>
+
+  <div id="mySidenav" class="sidenav">
+      <md-toolbar class="md-theme-light">
+        <h2 class="md-toolbar-tools">
+          <span>Uber Price Estimation</span>
+        </h2>
+      </md-toolbar>
+      <md-content>
+        <md-list>
+          <md-list-item class="md-3-line" ng-repeat="item in price">
+            <div class="md-list-item-text">
+              <h3>{{item.display_name}}</h3>
+              <p>{{item.estimate}}</p>
+            </div>
+            <md-divider ng-if="!$last"></md-divider>
+          </md-list-item>
+        </md-list>
+      </md-content>
+      <CENTER><md-progress-circular ng-disabled="!circularActivated" md-mode="indeterminate"></md-progress-circular></CENTER>
+
+      <md-toolbar class="md-theme-light">
+        <h2 class="md-toolbar-tools">
+          <span>Uber Time Estimation</span>
+        </h2>
+      </md-toolbar>
+      <md-content>
+        <md-list>
+          <md-list-item class="md-3-line" ng-repeat="item in time">
+            <div class="md-list-item-text">
+              <h3>{{item.display_name}}</h3>
+              <p>{{item.estimate}} Minutes</p>
+            </div>
+            <md-divider ng-if="!$last"></md-divider>
+          </md-list-item>
+        </md-list>
+      </md-content>
+  </div>
+
+  <CENTER>
+    <div class="box">
+      <div class="container-1">
+          
+          <input type="search" id="search" placeholder="Ex : Show me any coffee shop" />
+      </div>
+    </div>
+  </CENTER>
+
+  <md-progress-linear id="loading" md-mode="indeterminate" ng-show="loading == true"></md-progress-linear>
+  <div id="map" style="width:100%;height:1200px;"></div>
+  
+</body>
+
+<script>
+  
+
+  $('#search').keypress(function(e) {
+    if(e.which == 13) {
+      var text = $('#search').val();
+      angular.element(document.querySelector('[ng-controller="AppCtrl"]')).scope().sendSocket(text);
+      $('#search').val("");
+    }
+  });
+  
+  
+
+
+</script>
+
+
+ 
+</html>
