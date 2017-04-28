@@ -82,6 +82,10 @@ angular.module('app.controllers', ['ngMaterial']).
     var directionsService = new google.maps.DirectionsService();
     var map;
 
+    var firstVisit = true;
+
+    // ----------- INITIAL VALUE ----------------------
+
     $scope.isFromMobile = window.mobilecheck();
     if(window.mobilecheck()){
       
@@ -408,21 +412,12 @@ angular.module('app.controllers', ['ngMaterial']).
         map: map,
         title: place.name,
         position: place.geometry.location,
-        label: 'click me',
         icon: {
           url: 'http://images.clipartpanda.com/location-icon-vector-location_map_pin_black5.png',
           anchor: new google.maps.Point(60, 60),
           scaledSize: new google.maps.Size(45, 67)
         }
       });
-
-      if(isOpenInfoWindow){
-        $mdToast.show({
-          hideDelay   : 10000,
-          position    : 'buttom right',
-          templateUrl : 'markerClick.html'
-        });
-      }
 
       var service = new google.maps.places.PlacesService(map);
       service.getDetails(place, function(result, status) {
@@ -456,7 +451,18 @@ angular.module('app.controllers', ['ngMaterial']).
           content: elTooltip[0]
         });
 
-        if(isOpenInfoWindow) infowindow.open(map, marker);
+        if(firstVisit){
+          $mdToast.show({
+            hideDelay   : 10000,
+            position    : 'buttom right',
+            templateUrl : 'markerClick.html'
+          });
+          firstVisit = false;
+        }
+        if(isOpenInfoWindow){
+          console.log("masuk");
+          infowindow.open(map, marker);
+        }
 
         google.maps.event.addListener(marker, 'click', function() {
           $scope.clicked = true;
@@ -475,7 +481,7 @@ angular.module('app.controllers', ['ngMaterial']).
       var bounds = new google.maps.LatLngBounds();
       var placesList = document.getElementById('places');
       var length = (places.length > 30)? 30 : places.length; 
-
+      console.log(length);
       for(var i = 0; i < length; i++){
         var place = places[i];
         var isHealthPlace = false;
@@ -484,7 +490,7 @@ angular.module('app.controllers', ['ngMaterial']).
              || place.types[j] == "cafe" || place.types[j] == "food" || place.types[j] == "night_club"
              || place.types[j] == "bar" || place.types[j] == "movie_theater" || place.types[j] == "beauty_salon" || place.types[j] == "hair_care"
             ){
-            if(i == length-1){
+            if(i >= length-2){
               addMarker(place, true);  
             } else {
               addMarker(place, false);  
