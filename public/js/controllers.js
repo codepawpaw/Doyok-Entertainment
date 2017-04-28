@@ -410,7 +410,6 @@ angular.module('app.controllers', ['ngMaterial']).
     function addMarker(place, isOpenInfoWindow) {
       var marker = new google.maps.Marker({
         map: map,
-        title: place.name,
         position: place.geometry.location,
         icon: {
           url: 'http://images.clipartpanda.com/location-icon-vector-location_map_pin_black5.png',
@@ -419,54 +418,82 @@ angular.module('app.controllers', ['ngMaterial']).
         }
       });
 
-      var service = new google.maps.places.PlacesService(map);
-      service.getDetails(place, function(result, status) {
-        if (status !== google.maps.places.PlacesServiceStatus.OK) {
-          return;
-        }
-        var end = {
-          lat: result.geometry.location.lat(),
-          lng: result.geometry.location.lng()
-        };
-        $scope.end = end;
-
-        var contentString = '<CENTER><div id="content">'+
-          '<div id="siteNotice">'+
-          '</div>'+
-          '<h1 id="firstHeading" class="firstHeading">'+result.name+'</h1><BR>'+
-          '<div id="bodyContent">';
-
-        if(result.formatted_address != undefined) contentString += '<p>'+result.formatted_address+'</p>'+'<br>';
-
-        if(result.formatted_phone_number != undefined) contentString += '<p>'+result.formatted_phone_number+'</p>';
-
-        if(result.rating != undefined) contentString += '<p> Rating '+result.rating+'</p>';
-
-        if(resul.url != undefined) contentString += '<a href="'+result.url+'"><button class="md-primary md-raised md-button md-ink-ripple" type="button" ">See On Gmap</button></a>';
-
-        contentString += '<button class="md-primary md-raised md-button md-ink-ripple" type="button" ng-click="getDirection();">Get Direction</button>'+'<br>'+
-          '</div>'+
-          '</div></CENTER>';
-
-        var elTooltip = $compile(contentString)($scope);
-        var infowindow = new google.maps.InfoWindow({
-          content: elTooltip[0]
+      if(firstVisit){
+        $mdToast.show({
+          hideDelay   : 10000,
+          position    : 'buttom right',
+          templateUrl : 'markerClick.html'
         });
+      }
+      if(isOpenInfoWindow && firstVisit){
+        var service = new google.maps.places.PlacesService(map);
+        service.getDetails(place, function(result, status) {
+          if (status !== google.maps.places.PlacesServiceStatus.OK) {
+            return;
+          }
 
-        if(firstVisit){
-          $mdToast.show({
-            hideDelay   : 10000,
-            position    : 'buttom right',
-            templateUrl : 'markerClick.html'
+          var contentString = '<CENTER><div id="content">'+
+            '<div id="siteNotice">'+
+            '</div>'+
+            '<h1 id="firstHeading" class="firstHeading">'+result.name+'</h1><BR>'+
+            '<div id="bodyContent">';
+
+          if(result.formatted_address != undefined) contentString += '<p>'+result.formatted_address+'</p>'+'<br>';
+
+          if(result.formatted_phone_number != undefined) contentString += '<p>'+result.formatted_phone_number+'</p>';
+
+          if(result.rating != undefined) contentString += '<p> Rating '+result.rating+'</p>';
+
+          if(result.url != undefined) contentString += '<a href="'+result.url+'"><button class="md-primary md-raised md-button md-ink-ripple" type="button" ">See On Gmap</button></a>';
+
+          contentString += '<button class="md-primary md-raised md-button md-ink-ripple" type="button" ng-click="getDirection();">Get Direction</button>'+'<br>'+
+            '</div>'+
+            '</div></CENTER>';
+
+          var elTooltip = $compile(contentString)($scope);
+          var infowindow = new google.maps.InfoWindow({
+            content: elTooltip[0]
           });
-          firstVisit = false;
-        }
-        /*if(isOpenInfoWindow){
-          console.log("masuk");
-          infowindow.open(map, marker);
-        }*/
 
-        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.open(map, marker);
+          firstVisit =  false;
+
+        });
+      }
+      google.maps.event.addListener(marker, 'click', function() {
+        var service = new google.maps.places.PlacesService(map);
+        service.getDetails(place, function(result, status) {
+          if (status !== google.maps.places.PlacesServiceStatus.OK) {
+            return;
+          }
+          var end = {
+            lat: result.geometry.location.lat(),
+            lng: result.geometry.location.lng()
+          };
+          $scope.end = end;
+
+          var contentString = '<CENTER><div id="content">'+
+            '<div id="siteNotice">'+
+            '</div>'+
+            '<h1 id="firstHeading" class="firstHeading">'+result.name+'</h1><BR>'+
+            '<div id="bodyContent">';
+
+          if(result.formatted_address != undefined) contentString += '<p>'+result.formatted_address+'</p>'+'<br>';
+
+          if(result.formatted_phone_number != undefined) contentString += '<p>'+result.formatted_phone_number+'</p>';
+
+          if(result.rating != undefined) contentString += '<p> Rating '+result.rating+'</p>';
+
+          if(result.url != undefined) contentString += '<a href="'+result.url+'"><button class="md-primary md-raised md-button md-ink-ripple" type="button" ">See On Gmap</button></a>';
+
+          contentString += '<button class="md-primary md-raised md-button md-ink-ripple" type="button" ng-click="getDirection();">Get Direction</button>'+'<br>'+
+            '</div>'+
+            '</div></CENTER>';
+
+          var elTooltip = $compile(contentString)($scope);
+          var infowindow = new google.maps.InfoWindow({
+            content: elTooltip[0]
+          });
           $scope.clicked = true;
           $scope.loading = true;
 
@@ -474,6 +501,7 @@ angular.module('app.controllers', ['ngMaterial']).
           $scope.clicked = false;
           $scope.loading = false;
           self.toggleActivation();
+
         });
       });
     }
@@ -483,7 +511,6 @@ angular.module('app.controllers', ['ngMaterial']).
       var bounds = new google.maps.LatLngBounds();
       var placesList = document.getElementById('places');
       var length = (places.length > 30)? 30 : places.length; 
-      console.log(length);
       for(var i = 0; i < length; i++){
         var place = places[i];
         var isHealthPlace = false;
