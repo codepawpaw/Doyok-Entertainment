@@ -435,7 +435,7 @@ angular.module('app.controllers', ['ngMaterial']).
           '</div>'+
           '<h1 id="firstHeading" class="firstHeading">'+result.name+'</h1><BR>'+
           '<div id="bodyContent">';
-          
+
         if(result.formatted_address != undefined) contentString += '<p>'+result.formatted_address+'</p>'+'<br>';
 
         if(result.formatted_phone_number != undefined) contentString += '<p>'+result.formatted_phone_number+'</p>';
@@ -461,10 +461,10 @@ angular.module('app.controllers', ['ngMaterial']).
           });
           firstVisit = false;
         }
-        if(isOpenInfoWindow){
+        /*if(isOpenInfoWindow){
           console.log("masuk");
           infowindow.open(map, marker);
-        }
+        }*/
 
         google.maps.event.addListener(marker, 'click', function() {
           $scope.clicked = true;
