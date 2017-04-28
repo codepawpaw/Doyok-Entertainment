@@ -305,9 +305,7 @@ angular.module('app.controllers', ['ngMaterial']).
           query: keywords
         };
 
-        //service.radarSearch(request, callback);
         service.textSearch(request, callback);
-        //service.nearbySearch(request, callback);
       });
     };
 
@@ -405,59 +403,70 @@ angular.module('app.controllers', ['ngMaterial']).
       });
     }
 
-    function addMarker(place) {
-        var marker = new google.maps.Marker({
-          map: map,
-          title: place.name,
-          position: place.geometry.location,
-          icon: {
-            url: 'http://images.clipartpanda.com/location-icon-vector-location_map_pin_black5.png',
-            anchor: new google.maps.Point(60, 60),
-            scaledSize: new google.maps.Size(45, 67)
-          }
+    function addMarker(place, isOpenInfoWindow) {
+      var marker = new google.maps.Marker({
+        map: map,
+        title: place.name,
+        position: place.geometry.location,
+        label: 'click me',
+        icon: {
+          url: 'http://images.clipartpanda.com/location-icon-vector-location_map_pin_black5.png',
+          anchor: new google.maps.Point(60, 60),
+          scaledSize: new google.maps.Size(45, 67)
+        }
+      });
+
+      if(isOpenInfoWindow){
+        $mdToast.show({
+          hideDelay   : 10000,
+          position    : 'buttom right',
+          templateUrl : 'markerClick.html'
         });
-      google.maps.event.addListener(marker, 'click', function() {
-        $scope.clicked = true;
-        $scope.loading = true;
+      }
 
-        var service = new google.maps.places.PlacesService(map);
-        service.getDetails(place, function(result, status) {
-          if (status !== google.maps.places.PlacesServiceStatus.OK) {
-            return;
-          }
-          var end = {
-            lat: result.geometry.location.lat(),
-            lng: result.geometry.location.lng()
-          };
-          $scope.end = end;
+      var service = new google.maps.places.PlacesService(map);
+      service.getDetails(place, function(result, status) {
+        if (status !== google.maps.places.PlacesServiceStatus.OK) {
+          return;
+        }
+        var end = {
+          lat: result.geometry.location.lat(),
+          lng: result.geometry.location.lng()
+        };
+        $scope.end = end;
 
-          var contentString = '<CENTER><div id="content">'+
-            '<div id="siteNotice">'+
-            '</div>'+
-            '<h1 id="firstHeading" class="firstHeading">'+result.name+'</h1><BR>'+
-            '<div id="bodyContent">'+
-            '<p>'+result.formatted_address+'</p>'+'<br>';
+        var contentString = '<CENTER><div id="content">'+
+          '<div id="siteNotice">'+
+          '</div>'+
+          '<h1 id="firstHeading" class="firstHeading">'+result.name+'</h1><BR>'+
+          '<div id="bodyContent">'+
+          '<p>'+result.formatted_address+'</p>'+'<br>';
 
-          if(result.formatted_phone_number != undefined) contentString += '<p>'+result.formatted_phone_number+'</p>';
+        if(result.formatted_phone_number != undefined) contentString += '<p>'+result.formatted_phone_number+'</p>';
 
-          if(result.rating != undefined) contentString += '<p> Rating '+result.rating+'</p>';
+        if(result.rating != undefined) contentString += '<p> Rating '+result.rating+'</p>';
 
-          contentString += '<a href="'+result.url+'"><button class="md-primary md-raised md-button md-ink-ripple" type="button" ">See On Gmap</button></a>'+
-            '<button class="md-primary md-raised md-button md-ink-ripple" type="button" ng-click="getDirection();">Get Direction</button>'+'<br>'+
-            '</div>'+
-            '</div></CENTER>';
+        contentString += '<a href="'+result.url+'"><button class="md-primary md-raised md-button md-ink-ripple" type="button" ">See On Gmap</button></a>'+
+          '<button class="md-primary md-raised md-button md-ink-ripple" type="button" ng-click="getDirection();">Get Direction</button>'+'<br>'+
+          '</div>'+
+          '</div></CENTER>';
 
-          var elTooltip = $compile(contentString)($scope);
-          var infowindow = new google.maps.InfoWindow({
-              content: elTooltip[0]
-          });
-          
+        var elTooltip = $compile(contentString)($scope);
+        var infowindow = new google.maps.InfoWindow({
+          content: elTooltip[0]
+        });
+
+        if(isOpenInfoWindow) infowindow.open(map, marker);
+
+        google.maps.event.addListener(marker, 'click', function() {
+          $scope.clicked = true;
+          $scope.loading = true;
+
           infowindow.open(map, marker);
           $scope.clicked = false;
           $scope.loading = false;
           self.toggleActivation();
         });
-        
       });
     }
 
@@ -466,6 +475,7 @@ angular.module('app.controllers', ['ngMaterial']).
       var bounds = new google.maps.LatLngBounds();
       var placesList = document.getElementById('places');
       var length = (places.length > 30)? 30 : places.length; 
+
       for(var i = 0; i < length; i++){
         var place = places[i];
         var isHealthPlace = false;
@@ -474,7 +484,11 @@ angular.module('app.controllers', ['ngMaterial']).
              || place.types[j] == "cafe" || place.types[j] == "food" || place.types[j] == "night_club"
              || place.types[j] == "bar" || place.types[j] == "movie_theater" || place.types[j] == "beauty_salon" || place.types[j] == "hair_care"
             ){
-            addMarker(place);  
+            if(i == length-1){
+              addMarker(place, true);  
+            } else {
+              addMarker(place, false);  
+            }
             break;  
           }    
         }
