@@ -87,14 +87,18 @@ angular.module('app.controllers', ['ngMaterial']).
     // ----------- INITIAL VALUE ----------------------
 
     $scope.isFromMobile = window.mobilecheck();
-    console.log($scope.isFromMobile);
     if(window.mobilecheck()){
+
+      $mdToast.show({
+        hideDelay   : 3000,
+        position    : 'buttom left',
+        templateUrl : 'mobile.html'
+      });
       
       document.getElementById("container").style.width = "100%";
       document.getElementById("container").style.left = "0";
 
-      document.getElementById("container-1").style.width = "100%";
-      document.getElementById("container-1").style.left = "0";
+      document.getElementById("map").style.height = "1200px";
     }
 
     $scope.price = [];
@@ -142,7 +146,7 @@ angular.module('app.controllers', ['ngMaterial']).
     $(window).resize(function(){
         if(window.innerWidth <= 800 && window.innerHeight <= 600) {
            document.getElementById("map").style.width = "100%";
-           document.getElementById("map").style.height = "100%";
+           document.getElementById("map").style.height = "1200px";
 
            document.getElementById("container").style.width = "100%";
            document.getElementById("container").style.left = "0";
@@ -158,9 +162,13 @@ angular.module('app.controllers', ['ngMaterial']).
            document.getElementById("container-1").style.width = "30%";
         }     
     });
-    
+
     $scope.openNav = function() {
-      document.getElementById("mySidenav").style.width = "15%";
+      if(window.mobilecheck()){
+        document.getElementById("mySidenav").style.width = "45%";
+      } else {
+        document.getElementById("mySidenav").style.width = "15%";
+      }
 
     }
 
@@ -524,7 +532,7 @@ angular.module('app.controllers', ['ngMaterial']).
              || place.types[j] == "cafe" || place.types[j] == "food" || place.types[j] == "night_club"
              || place.types[j] == "bar" || place.types[j] == "movie_theater" || place.types[j] == "beauty_salon" || place.types[j] == "hair_care"
             ){
-            if(i >= length-2){
+            if(i >= length-1){
               addMarker(place, true);  
             } else {
               addMarker(place, false);  
