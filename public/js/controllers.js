@@ -156,7 +156,7 @@ angular.module('app.controllers', ['ngMaterial']).
            document.getElementById("container").style.left = "35%";
 
            document.getElementById("container-1").style.width = "30%";
-           document.getElementById("container-1").style.left = "33%";
+           //document.getElementById("container-1").style.left = "33%";
         }     
     });
 
@@ -431,6 +431,12 @@ angular.module('app.controllers', ['ngMaterial']).
           if (status !== google.maps.places.PlacesServiceStatus.OK) {
             return;
           }
+
+          var end = {
+            lat: result.geometry.location.lat(),
+            lng: result.geometry.location.lng()
+          };
+          $scope.end = end;
 
           var contentString = '<CENTER><div id="content">'+
             '<div id="siteNotice">'+
