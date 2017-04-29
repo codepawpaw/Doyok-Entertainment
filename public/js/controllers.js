@@ -87,6 +87,7 @@ angular.module('app.controllers', ['ngMaterial']).
     // ----------- INITIAL VALUE ----------------------
 
     $scope.isFromMobile = window.mobilecheck();
+    console.log($scope.isFromMobile);
     if(window.mobilecheck()){
       
       document.getElementById("container").style.width = "100%";
@@ -147,7 +148,6 @@ angular.module('app.controllers', ['ngMaterial']).
            document.getElementById("container").style.left = "0";
 
            document.getElementById("container-1").style.width = "100%";
-           document.getElementById("container-1").style.left = "0";
         } else {
            document.getElementById("map").style.width = "100%";
            document.getElementById("map").style.height = "1200px";
@@ -156,10 +156,9 @@ angular.module('app.controllers', ['ngMaterial']).
            document.getElementById("container").style.left = "35%";
 
            document.getElementById("container-1").style.width = "30%";
-           //document.getElementById("container-1").style.left = "33%";
         }     
     });
-
+    
     $scope.openNav = function() {
       document.getElementById("mySidenav").style.width = "15%";
 
