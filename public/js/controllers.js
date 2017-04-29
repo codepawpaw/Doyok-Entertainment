@@ -99,6 +99,10 @@ angular.module('app.controllers', ['ngMaterial']).
       document.getElementById("container").style.left = "0";
 
       document.getElementById("map").style.height = "1200px";
+
+      document.getElementById("search").value = "Type Something";
+    } else {
+      document.getElementById("search").value = "Ex : Show me any coffee shop | Powered by IBM Watson";
     }
 
     $scope.price = [];
@@ -430,6 +434,12 @@ angular.module('app.controllers', ['ngMaterial']).
           hideDelay   : 10000,
           position    : 'buttom right',
           templateUrl : 'markerClick.html'
+        });
+
+        $mdToast.show({
+          hideDelay   : 10000,
+          position    : 'buttom left',
+          templateUrl : 'watson.html'
         });
       }
       if(isOpenInfoWindow && firstVisit){
