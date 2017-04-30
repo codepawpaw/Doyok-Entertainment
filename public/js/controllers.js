@@ -105,6 +105,8 @@ angular.module('app.controllers', ['ngMaterial']).
       document.getElementById("search").value = "Ex : Show me any coffee shop | Powered by IBM Watson";
     }
 
+    document.getElementById("popup").style.visibility = "hidden";
+
     $scope.price = [];
     $scope.time = [];
 
@@ -214,6 +216,14 @@ angular.module('app.controllers', ['ngMaterial']).
         }
       }
     }
+
+    $scope.openCreditPopUp = function(){
+      document.getElementById("popup").style.visibility = "visible";
+    };
+
+    $scope.closeCreditPopUp = function(){
+      document.getElementById("popup").style.visibility = "hidden";
+    };
 
     $scope.getByCategory = function(){
       if($scope.selectedCategory == 'shopping_mall' || $scope.selectedCategory == 'bar'){
